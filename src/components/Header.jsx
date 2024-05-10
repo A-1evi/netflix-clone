@@ -47,9 +47,9 @@ const Header = () => {
   }, []);
 
   return (
-    <div className="z-40 absolute w-screen bg-gradient-to-b from-black flex justify-between h-28 ">
+    <div className="z-40 absolute w-screen bg-gradient-to-b from-black flex justify-between h-28 pr-6 ">
       <img
-        className="w-44 h-[70px] mx-10  "
+        className="w-44 h-20 mx-10   "
         src= {LOGO}
       />
       {user && (
@@ -60,13 +60,11 @@ const Header = () => {
             src= {USER_ICON}
             alt="user.png"
           ></img>
-          <h1 className=" text-white text-2xl font-semibold p-3 my-5">
-            ({user.displayName})
-          </h1>
+          
           <div className="absolute top-24">
             {showSignOutButton && (
               <button
-                className="bg-red-600 p-2 my-2 text-white rounded-sm font-bold"
+                className="bg-red-600 px-2  mr-5 text-white rounded-sm font-bold"
                 onClick={handleSignOut}
               >
                 Sign Out

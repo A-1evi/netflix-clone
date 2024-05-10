@@ -93,9 +93,9 @@ const Login = () => {
     }
   };
   return (
-    <div className="">
+    <div className=" ">
       <Header />
-      <div className="absolute">
+      <div className="absolute  ">
         <img src={LOGIN_BG}></img>
       </div>
       <form
