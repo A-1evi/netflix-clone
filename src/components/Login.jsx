@@ -1,42 +1,144 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Header from "./Header.jsx";
+import { checkValidateData } from "../utils/validate.js";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
+import { auth } from "../utils/firebase.js";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addUser } from "../utils/userSlice.js";
+import { LOGIN_BG } from "../utils/constants.js";
 
 const Login = () => {
+  const dispatch = useDispatch();
+
   const [isSignUpForm, setIsSignUpForm] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
+
+  const navigate = useNavigate();
   const handleSignUpForm = () => {
     setIsSignUpForm(!isSignUpForm);
+  };
+
+  const email = useRef(null);
+  const password = useRef(null);
+  const name = useRef(null);
+
+  const handleButtonClick = () => {
+    const message = checkValidateData(
+      email.current.value,
+      password.current.value
+    );
+    setErrorMessage(message);
+
+    if (message) return;
+
+    //Sign in Signup logic
+
+    if (isSignUpForm) {
+      //Sign up logic
+      createUserWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          // Signed up
+          const user = userCredential.user;
+          updateProfile(user, {
+            displayName: name.current.value,
+          })
+            .then(() => {
+              const { uid, email, displayName } = user;
+              dispatch(
+                addUser({
+                  uid: uid,
+                  email: email,
+                  displayName: displayName,
+                })
+              );
+
+              // ...
+            })
+            .catch((error) => {
+              setErrorMessage(error);
+            });
+          console.log(user);
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMessage(errorCode + "-" + errorMessage);
+        });
+    } else {
+      //Sign in logic
+
+      signInWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMessage(errorCode + "-" + errorMessage);
+        });
+    }
   };
   return (
     <div className="">
       <Header />
       <div className="absolute">
-        <img src="https://assets.nflxext.com/ffe/siteui/vlv3/d253acf4-a1e2-4462-a416-f78802dc2d85/f04bf88c-f71c-4d02-82ed-adb870b8f8db/IN-en-20240429-POP_SIGNUP_TWO_WEEKS-perspective_WEB_658a042e-62cf-473d-8da0-7b875f23e2ef_large.jpg"></img>
+        <img src={LOGIN_BG}></img>
       </div>
-      <form className="absolute w-3/12 bg-black m-auto left-0 right-0 p-12 my-36  text-white bg-opacity-80 rounded-lg ">
+      <form
+        onSubmit={(e) => e.preventDefault()}
+        className="absolute w-3/12 bg-black m-auto left-0 right-0 p-12 my-36  text-white bg-opacity-80 rounded-lg "
+      >
         <h1 className="text-3xl p-2 my-2 font-bold">
           {isSignUpForm ? "Sign Up " : "Sign In"}
         </h1>
         {isSignUpForm && (
           <input
+            ref={name}
             type="text"
             placeholder="Full Name"
             className="p-4 my-4 bg-neutral-900 w-full bg-opacity-70 "
           ></input>
         )}
         <input
+          ref={email}
           type="text"
           placeholder="Email Address"
           className="p-4 my-4 bg-neutral-900 w-full bg-opacity-70 "
         ></input>
         <input
+          ref={password}
           type="password"
           placeholder="Password"
           className="p-4 my-4 bg-neutral-900 w-full bg-opacity-70"
         ></input>
-        <button type="submit" className="p-2 my-2 bg-red-600 w-full rounded-sm">
-          Sign In
+        <p className="text-red-600 text-sm font-semibold p-2 m-2">
+          {errorMessage}
+        </p>
+        <button
+          type="submit"
+          className="p-2 my-2 bg-red-600 w-full rounded-sm"
+          onClick={handleButtonClick}
+        >
+          {isSignUpForm ? "Sign Up " : "Sign In"}
         </button>
-        <p className="py-5 font-semibold cursor-pointer" onClick={handleSignUpForm}>
+        <p
+          className="py-5 font-semibold cursor-pointer"
+          onClick={handleSignUpForm}
+        >
           {isSignUpForm
             ? "Already Signed up? Sign in now."
             : "New to Netflix? Sign up now."}
