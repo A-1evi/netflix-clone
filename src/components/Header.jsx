@@ -5,13 +5,28 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { useNavigate } from "react-router-dom";
 import { addUser, removeUser } from "../utils/userSlice";
-import { LOGO, USER_ICON } from "../utils/constants";
+import { LOGO, SUPPORTED_LANG, USER_ICON } from "../utils/constants";
+import { toggleGptSearchView } from "../utils/gptSlice";
+import { changeLanguage } from "../utils/configSlice";
+import lang from "../utils/languageConstants";
 
 const Header = () => {
   const navigate = useNavigate();
   const user = useSelector((store) => store.user);
 
+  const showGpt = useSelector(store => store.gpt.showGpt)
+
+  const handleLanguageChange = (e) => {
+    dispatch(changeLanguage(e.target.value));
+  };
+
+  const langKey = useSelector((store) => store.config.lang);
+
   const dispatch = useDispatch();
+
+  const handleShowGpt = () => {
+    dispatch(toggleGptSearchView());
+  };
 
   const [showSignOutButton, setShowSignOutButton] = useState(false);
   const ShowSignOut = () => {
@@ -27,7 +42,7 @@ const Header = () => {
   };
 
   useEffect(() => {
-   const unsuscribe = onAuthStateChanged(auth, (user) => {
+    const unsuscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         const { uid, email, displayName } = user;
         dispatch(
@@ -47,21 +62,35 @@ const Header = () => {
   }, []);
 
   return (
-    <div className="z-40 absolute w-screen bg-gradient-to-b from-black flex justify-between h-28 pr-6 ">
-      <img
-        className="w-44 h-20 mx-10   "
-        src= {LOGO}
-      />
+    <div className="z-50 absolute w-screen px-9 py-2 bg-gradient-to-b from-black flex justify-between  pr-6 ">
+      <img className="w-60" src={LOGO} />
+      <select
+        className="p-2 bg-gray-800 text-white m-8 absolute right-56"
+        onChange={handleLanguageChange}
+      >
+        {SUPPORTED_LANG.map((lang) => (
+          <option key={lang.indentifier} value={lang.indentifier}>
+            {lang.name}
+          </option>
+        ))}
+      </select>
+
       {user && (
-        <div className="flex">
+        <div className="flex p-2">
+          <button
+            className="py-2 px-4 m-6 bg-blue-600 text-white rounded-lg font-bold shadow-lg"
+            onClick={handleShowGpt}
+          >
+            {showGpt ? "Home" : "GPT" + " " + lang[langKey].search}
+          </button>
           <img
             className="w-14 h-14 p-1 mx-2 my-5 "
             onClick={ShowSignOut}
-            src= {USER_ICON}
+            src={USER_ICON}
             alt="user.png"
           ></img>
-          
-          <div className="absolute top-24">
+
+          <div className="absolute top-24 right-4 ">
             {showSignOutButton && (
               <button
                 className="bg-red-600 px-2  mr-5 text-white rounded-sm font-bold"

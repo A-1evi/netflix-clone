@@ -8,12 +8,17 @@ import {
 } from "firebase/auth";
 import { auth } from "../utils/firebase.js";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "../utils/userSlice.js";
 import { LOGIN_BG } from "../utils/constants.js";
+import lang from "../utils/languageConstants.js";
 
 const Login = () => {
   const dispatch = useDispatch();
+
+
+  const langKey = useSelector(store => store.config.lang)
+
 
   const [isSignUpForm, setIsSignUpForm] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
@@ -96,14 +101,14 @@ const Login = () => {
     <div className=" ">
       <Header />
       <div className="absolute  ">
-        <img src={LOGIN_BG}></img>
+        <img className="w-screen" src={LOGIN_BG}></img>
       </div>
       <form
         onSubmit={(e) => e.preventDefault()}
         className="absolute w-3/12 bg-black m-auto left-0 right-0 p-12 my-36  text-white bg-opacity-80 rounded-lg "
       >
         <h1 className="text-3xl p-2 my-2 font-bold">
-          {isSignUpForm ? "Sign Up " : "Sign In"}
+        {isSignUpForm ? lang[langKey].signUp : lang[langKey].signIn}
         </h1>
         {isSignUpForm && (
           <input
@@ -133,7 +138,7 @@ const Login = () => {
           className="p-2 my-2 bg-red-600 w-full rounded-sm"
           onClick={handleButtonClick}
         >
-          {isSignUpForm ? "Sign Up " : "Sign In"}
+          {isSignUpForm ? lang[langKey].signUp : lang[langKey].signIn}
         </button>
         <p
           className="py-5 font-semibold cursor-pointer"
