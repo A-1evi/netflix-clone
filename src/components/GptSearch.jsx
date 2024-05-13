@@ -1,13 +1,17 @@
 import React from "react";
 import { LOGIN_BG } from "../utils/constants";
 import GptInputBar from "./GptInputBar";
+import GptMovieSuggestion from "./GptMovieSuggestion";
 
 const GptSearch = () => {
   return (
     <div>
-    <img className="absolute -z-20 w-screen" src={LOGIN_BG} alt="logo"></img>
-   <GptInputBar/>
-   </div> 
+      <div className="fixed -z-20">
+        <img className="w-screen" src={LOGIN_BG} alt="logo"></img>
+      </div>
+      <GptInputBar />
+      <GptMovieSuggestion />
+    </div>
   );
 };
 

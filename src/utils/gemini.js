@@ -1,9 +1,8 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-// Access your API key as an environment variable (see "Set up your API key" above)
-// eslint-disable-next-line no-undef
-const genAI = new GoogleGenerativeAI(import.meta.env.API_KEY);
+const apiKey = import.meta.env.VITE_API_KEY;
 
-// ...
+const genAI = new GoogleGenerativeAI(apiKey);
+const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
-export default genAI;
+export default  model;

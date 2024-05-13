@@ -5,6 +5,9 @@ import { useEffect } from "react";
 
 const useMovieCardTrailer = (movieId) => {
   const dispatch = useDispatch();
+
+  if (!movieId) return null;
+
   const getMovieVideo = async () => {
     const data = await fetch(
       "https://api.themoviedb.org/3/movie/" +

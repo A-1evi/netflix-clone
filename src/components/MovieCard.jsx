@@ -6,6 +6,8 @@ import VideoCard from "./VideoCard";
 const MovieCard = ({ movieId, posterPath }) => {
   const [hidden, setHidden] = useState(true);
 
+  if(!posterPath) return null;
+
   return (
     <div>
       <div

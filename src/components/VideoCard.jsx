@@ -6,6 +6,9 @@ import useMovieCardTrailer from "../hooks/useMovieCardTrailer";
 import useMovieDetails from "../hooks/useMovieDetails";
 
 const VideoCard = ({ movieId }) => {
+  useMovieCardTrailer(movieId);
+  useMovieDetails(movieId);
+
   const trailerCardVideo = useSelector(
     (store) => store.movies?.movieCardTrailer
   );
@@ -13,9 +16,7 @@ const VideoCard = ({ movieId }) => {
   const movieDetails = useSelector((store) => store.movies?.movieDetails);
   console.log(movieDetails);
 
-  useMovieCardTrailer(movieId);
-
-  useMovieDetails(movieId);
+  
   return (
     <div className="w-[380px] h-[380px] bg-black absolute z-50 overflow-hidden rounded-md">
       <div className=" relative  -mt-20  ">
@@ -33,7 +34,7 @@ const VideoCard = ({ movieId }) => {
       </div>
       <div className="relative -mt-12 bg-gradient-to-b from-black">
         <h1 className="text-white text-2xl font-bold my-2">
-          {movieDetails?.original_title}
+          {movieDetails?.title}
         </h1>
         <h2 className="text-white  text-xl flex justify-between">
           <span className="font-bold text-xl">
