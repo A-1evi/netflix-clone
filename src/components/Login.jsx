@@ -101,13 +101,13 @@ const Login = () => {
     <div className=" ">
       <Header />
       <div className="absolute  ">
-        <img className="w-screen" src={LOGIN_BG}></img>
+        <img className="w-screen h-screen object-cover" src={LOGIN_BG}></img>
       </div>
       <form
         onSubmit={(e) => e.preventDefault()}
-        className="absolute w-3/12 h-4/6 bg-black m-auto left-0 right-0 p-12 my-48  text-white bg-opacity-80 rounded-lg "
+        className="absolute md:w-3/12 md:h-4/6 bg-black m-auto left-0 right-0 p-12 md:my-48 my-24  text-white bg-opacity-80 rounded-lg h-3/4 "
       >
-        <h1 className="text-3xl p-2 my-2 font-bold">
+        <h1 className="md:text-3xl p-2 my-2 text-2xl font-bold ">
         {isSignUpForm ? lang[langKey].signUp : lang[langKey].signIn}
         </h1>
         {isSignUpForm && (

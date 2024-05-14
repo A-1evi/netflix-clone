@@ -16,7 +16,7 @@ const Browse = () => {
   usePopularMovies();
   useTopRated();
   return (
-    <div>
+    <div className="">
       <Header />
       {showGptSearch ? (
         <GptSearch />

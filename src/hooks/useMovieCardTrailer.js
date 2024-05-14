@@ -1,10 +1,14 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { OPTION_API } from "../utils/constants";
 import { addMovieCardTrailer } from "../utils/moviesSlice";
 import { useEffect } from "react";
 
 const useMovieCardTrailer = (movieId) => {
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    getMovieVideo();
+  }, []);
 
   if (!movieId) return null;
 
@@ -24,9 +28,6 @@ const useMovieCardTrailer = (movieId) => {
 
     dispatch(addMovieCardTrailer(trailer));
   };
-  useEffect(() => {
-    getMovieVideo();
-  }, []);
 };
 
 export default useMovieCardTrailer;

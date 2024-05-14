@@ -14,7 +14,7 @@ const Header = () => {
   const navigate = useNavigate();
   const user = useSelector((store) => store.user);
 
-  const showGpt = useSelector(store => store.gpt.showGpt)
+  const showGpt = useSelector((store) => store.gpt.showGpt);
 
   const handleLanguageChange = (e) => {
     dispatch(changeLanguage(e.target.value));
@@ -62,14 +62,14 @@ const Header = () => {
   }, []);
 
   return (
-    <div className="z-50 absolute w-screen px-9 py-2 bg-gradient-to-b from-black flex justify-between  pr-6 ">
-      <img className="w-60" src={LOGO} />
+    <div className="z-50 absolute w-screen md:px-9 md:py-2 bg-gradient-to-b from-black flex flex-col md:flex-row justify-between  md:pr-6  ">
+      <img className="w-36 md:w-60 mx-auto md:mx-0" src={LOGO} />
       <select
-        className="p-2 bg-gray-800 text-white m-8 absolute right-56"
+        className="md:p-2 bg-gray-800 text-white mr-2 absolute right-3  mt-3 md:right-60 md:m-8  "
         onChange={handleLanguageChange}
       >
         {SUPPORTED_LANG.map((lang) => (
-          <option key={lang.indentifier} value={lang.indentifier}>
+          <option className="" key={lang.indentifier} value={lang.indentifier}>
             {lang.name}
           </option>
         ))}
@@ -78,13 +78,13 @@ const Header = () => {
       {user && (
         <div className="flex p-2">
           <button
-            className="py-2 px-4 m-6 bg-blue-600 text-white rounded-lg font-bold shadow-lg"
+            className="md:py-2 md:px-4 md:m-6  m-8 ml-1 bg-blue-600 text-white rounded-lg md:font-bold text-sm md:text-xl md:font-bold"
             onClick={handleShowGpt}
           >
             {showGpt ? "Home" : "GPT" + " " + lang[langKey].search}
           </button>
           <img
-            className="w-14 h-14 p-1 mx-2 my-5 "
+            className="md:w-14 h-11 md:h-14 p-1 md:mx-2 my-6 mx-32  "
             onClick={ShowSignOut}
             src={USER_ICON}
             alt="user.png"
@@ -93,7 +93,7 @@ const Header = () => {
           <div className="absolute top-24 right-4 ">
             {showSignOutButton && (
               <button
-                className="bg-red-600 px-2  mr-5 text-white rounded-sm font-bold"
+                className="bg-red-600 px-1 py-1   mr-0 my-0 md:my-2 md:mr-5 md:my-10 text-white rounded-sm md:font-bold"
                 onClick={handleSignOut}
               >
                 Sign Out
